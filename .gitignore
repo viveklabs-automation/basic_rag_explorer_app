@@ -1,1 +1,25 @@
+# Local environment configurations
 backend/.env
+.env
+.env.local
+
+# Python caches and virtualenvs
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+.venv/
+
+# Node caches and builds
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+
+# Local database persistence
+db/
+backend/db/
+
+# System files
+.DS_Store
+Thumbs.db
