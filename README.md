@@ -1,3 +1,13 @@
+---
+title: Basic RAG Explorer
+emoji: 🔍
+colorFrom: blue
+colorTo: purple
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # RAG Explorer Application
 
 An interactive, visual **Retrieval-Augmented Generation (RAG)** explorer that lets you ingest PDF documents, analyze chunking breakdowns inside a local vector database, visualize dimensional grids, and query documents with real-time pipeline status trackers.
