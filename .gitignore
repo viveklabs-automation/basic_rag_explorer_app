@@ -23,3 +23,13 @@ backend/db/
 # System files
 .DS_Store
 Thumbs.db
+
+# ChromaDB local database
+db/
+chroma/
+*.bin
+*.sqlite3
+
+# PDFs and uploaded docs
+data/
+*.pdf
