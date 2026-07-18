@@ -16,6 +16,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/ .
 # Copy compiled frontend assets into a static folder served by FastAPI
 COPY --from=frontend-builder /frontend/dist ./frontend/dist
+# Copy data folder containing PDFs
+COPY data/ ./data/
 
 EXPOSE 8000
 # Launch FastAPI with uvicorn
