@@ -31,5 +31,5 @@ chroma/
 *.sqlite3
 
 # PDFs and uploaded docs
-data/
-*.pdf
+# data/
+# *.pdf
