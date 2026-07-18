@@ -4,7 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import chromadb
-
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse, HTMLResponse
 # Import our modular pipelines
 from ingestion import run_ingestion_pipeline
 from retrieval import run_retrieval_pipeline
@@ -28,6 +29,21 @@ app.add_middleware(
 
 DB_DIR = os.getenv("CHROMA_DB_DIR", "db")
 
+# Serve the React build if present
+if os.path.isdir("frontend/dist"):
+    app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="static")
+
+from fastapi.responses import FileResponse, HTMLResponse
+
+@app.get("/", response_class=HTMLResponse)
+async def root():
+    """Root endpoint – returns a simple HTML page when static files are not built.
+    If the React build exists, the static mount will serve `index.html` automatically.
+    """
+    index_path = "frontend/dist/index.html"
+    if os.path.isfile(index_path):
+        return FileResponse(index_path, media_type="text/html")
+    return HTMLResponse(content="<h1>RAG Explorer API is running</h1><p>Frontend not built – run <code>npm run build</code> or start the Vite dev server.</p>")
 class QueryRequest(BaseModel):
     query: str
 
