@@ -29,21 +29,6 @@ app.add_middleware(
 
 DB_DIR = os.getenv("CHROMA_DB_DIR", "db")
 
-# Serve the React build if present
-if os.path.isdir("frontend/dist"):
-    app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="static")
-
-from fastapi.responses import FileResponse, HTMLResponse
-
-@app.get("/", response_class=HTMLResponse)
-async def root():
-    """Root endpoint – returns a simple HTML page when static files are not built.
-    If the React build exists, the static mount will serve `index.html` automatically.
-    """
-    index_path = "frontend/dist/index.html"
-    if os.path.isfile(index_path):
-        return FileResponse(index_path, media_type="text/html")
-    return HTMLResponse(content="<h1>RAG Explorer API is running</h1><p>Frontend not built – run <code>npm run build</code> or start the Vite dev server.</p>")
 class QueryRequest(BaseModel):
     query: str
 
@@ -164,6 +149,20 @@ async def query_document(
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# Serve the React build if present
+if os.path.isdir("frontend/dist"):
+    app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="static")
+
+@app.get("/", response_class=HTMLResponse)
+async def root():
+    """Root endpoint – returns a simple HTML page when static files are not built.
+    If the React build exists, the static mount will serve `index.html` automatically.
+    """
+    index_path = "frontend/dist/index.html"
+    if os.path.isfile(index_path):
+        return FileResponse(index_path, media_type="text/html")
+    return HTMLResponse(content="<h1>RAG Explorer API is running</h1><p>Frontend not built – run <code>npm run build</code> or start the Vite dev server.</p>")
 
 if __name__ == "__main__":
     import uvicorn
